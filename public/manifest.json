@@ -5,32 +5,14 @@
     "orientation": "portrait",
     "scope": "/",
     "start_url": "/",
-    "name": "WendoJ",
-    "short_name": "WendoJ",
-    "description": "Full-stack website developer and TypeScript enthusiast.",
+    "name": "AbdRahmen Amri",
+    "short_name": "AbdRahmen Amri",
+    "description": "From web apps to AI driven platforms, I help businesses turn ideas into reliable digital products tailored, future ready, and built with trust at the core.",
     "icons": [
         {
-            "src": "/icon-192x192.png",
+            "src": "/assets/brand.svg",
             "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable any"
-        },
-        {
-            "src": "/icon-256x256.png",
-            "sizes": "256x256",
-            "type": "image/png",
-            "purpose": "maskable any"
-        },
-        {
-            "src": "/icon-384x384.png",
-            "sizes": "384x384",
-            "type": "image/png",
-            "purpose": "maskable any"
-        },
-        {
-            "src": "/icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
+            "type": "image/svg+xml",
             "purpose": "maskable any"
         }
     ],

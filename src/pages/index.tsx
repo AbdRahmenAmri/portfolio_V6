@@ -9,6 +9,9 @@ import {
   SearchCheck,
   Eye,
   MonitorSmartphone,
+  Shield,
+  Smartphone,
+  Monitor,
 } from "lucide-react";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
 import Spline from "@splinetool/react-spline";
@@ -26,11 +29,25 @@ import {
 } from "@/components/ui/carousel";
 import VanillaTilt from "vanilla-tilt";
 import { motion } from "framer-motion";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import i18nextConfig from "../../next-i18next.config.js";
+import type { UserConfig } from "next-i18next";
+import { type Locale } from "@/types/common.js";
+import { useRouter } from "next/router.js";
+
+const pills = [
+  { label: "web_app_developer", icon: Code2 },
+  { label: "mobile_app_developer", icon: Smartphone },
+  { label: "desktop_app_developer", icon: Monitor },
+  { label: "cyber_security_expert", icon: Shield },
+  { label: "ai_engineer", icon: Code2 },
+];
 
 const aboutStats = [
-  { label: "Years of experience", value: "3+" },
-  { label: "Technologies mastered", value: "5+" },
-  { label: "Companies worked with", value: "15+" },
+  { label: "years_experience", value: "4+" },
+  { label: "tech_mastered", value: "10+" },
+  { label: "companies_worked", value: "10+" },
 ];
 
 const projects = [
@@ -57,55 +74,60 @@ const projects = [
     description: "Robotics-focused technology company",
     image: "/assets/wrona.jpeg",
     href: "https://www.wrona.com/",
-  },
-  {
-    title: "This website",
-    description: "My personal website",
-    image: "/assets/portfolio.webm",
-    href: "https://github.com/wendoj/portfolio",
-  },
+  }
 ];
 
 const services = [
   {
-    service: "Frontend Development",
-    description:
-      "Creating stellar user interfaces and web experiences using the latest technologies.",
+    titleKey: "services_frontend_title",
+    descKey: "services_frontend_desc",
     icon: Code2,
   },
   {
-    service: "UX Design",
-    description:
-      "Building intuitive, user-centric designs that drive engagement and conversion.",
+    titleKey: "services_mobile_title",
+    descKey: "services_mobile_desc",
+    icon: Smartphone,
+  },
+  {
+    titleKey: "services_desktop_title",
+    descKey: "services_desktop_desc",
+    icon: Monitor,
+  },
+  {
+    titleKey: "services_cybersecurity_title",
+    descKey: "services_cybersecurity_desc",
+    icon: Shield,
+  },
+  {
+    titleKey: "services_ux_title",
+    descKey: "services_ux_desc",
     icon: Frame,
   },
   {
-    service: "SEO Optimization",
-    description:
-      "Enhancing your website's visibility in search engines for increased organic traffic.",
+    titleKey: "services_seo_title",
+    descKey: "services_seo_desc",
     icon: SearchCheck,
   },
   {
-    service: "Responsive Design",
-    description:
-      "Designing websites that look and perform equally well on all devices and screen sizes.",
+    titleKey: "services_responsive_title",
+    descKey: "services_responsive_desc",
     icon: MonitorSmartphone,
   },
   {
-    service: "Backend Development",
-    description:
-      "Developing robust, scalable server-side logic for a wide range of web applications.",
+    titleKey: "services_backend_title",
+    descKey: "services_backend_desc",
     icon: Eye,
   },
 ];
 
 export default function Home() {
+  const { t } = useTranslation("common");
   const refScrollContainer = useRef(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
-
+  const locale = useRouter().locale ?? "en" as Locale;
   // handle scroll
   useEffect(() => {
     const sections = document.querySelectorAll("section");
@@ -188,11 +210,13 @@ export default function Home() {
               data-scroll
               data-scroll-direction="horizontal"
               data-scroll-speed=".09"
-              className="flex flex-row items-center space-x-1.5"
+              className="flex flex-row items-center space-x-1.5 flex-wrap"
             >
-              <span className={styles.pill}>next.js</span>
-              <span className={styles.pill}>tailwindcss</span>
-              <span className={styles.pill}>typescript</span>
+              {pills.map((pill) => (
+                <span className={cn(styles.pill, "my-1")} key={pill.label}>
+                  {t(pill.label)}
+                </span>
+              ))}
             </div>
             <div>
               <h1
@@ -202,11 +226,11 @@ export default function Home() {
                 data-scroll-direction="horizontal"
               >
                 <span className="text-6xl tracking-tighter text-foreground 2xl:text-8xl">
-                  Hello, I&apos;m
+                  {t("hello_im")}
                   <br />
                 </span>
                 <span className="clash-grotesk text-gradient text-6xl 2xl:text-8xl">
-                  WendoJ.
+                  {t("my_name")}.
                 </span>
               </h1>
               <p
@@ -215,26 +239,25 @@ export default function Home() {
                 data-scroll-speed=".06"
                 className="mt-1 max-w-lg tracking-tight text-muted-foreground 2xl:text-xl"
               >
-                An experienced full-stack website developer with a passion for
-                crafting unique digital experiences.
+                {t("subtitle")}
               </p>
             </div>
             <span
               data-scroll
               data-scroll-enable-touch-speed
               data-scroll-speed=".06"
-              className="flex flex-row items-center space-x-1.5 pt-6"
+              className="flex flex-row items-center gap-2 pt-6"
             >
-              <Link href="mailto:wendoj@proton.me" passHref>
+              <Link href="mailto:abdrahmen.3amri@gmail.com" passHref>
                 <Button>
-                  Get in touch <ChevronRight className="ml-1 h-4 w-4" />
+                  {t("get_in_touch")} <ChevronRight className={cn("ml-1 h-4 w-4", locale === "ar" && "rotate-180")} />
                 </Button>
               </Link>
               <Button
                 variant="outline"
                 onClick={() => scrollTo(document.querySelector("#about"))}
               >
-                Learn more
+                {t("learn_more")}
               </Button>
             </span>
 
@@ -244,7 +267,7 @@ export default function Home() {
                 isScrolled && styles["scroll--hidden"],
               )}
             >
-              Scroll to discover{" "}
+              {t("scroll_to_discover")} {" "}
               <TriangleDownIcon className="mt-1 animate-bounce" />
             </div>
           </div>
@@ -254,7 +277,7 @@ export default function Home() {
             id={styles["canvas-container"]}
             className="mt-14 h-full w-full xl:mt-0"
           >
-            <Suspense fallback={<span>Loading...</span>}>
+            <Suspense fallback={<span>{t("loading")}</span>}>
               <Spline scene="/assets/scene.splinecode" />
             </Suspense>
           </div>
@@ -268,20 +291,8 @@ export default function Home() {
             data-scroll-position="top"
             className="my-14 flex max-w-6xl flex-col justify-start space-y-10"
           >
-            <h2 className="py-16  pb-2 text-3xl font-light leading-normal tracking-tighter text-foreground xl:text-[40px]">
-              I&apos;m an experienced full-stack developer proficient in{" "}
-              <Link
-                href="https://create.t3.gg/"
-                target="_blank"
-                className="underline"
-              >
-                TypeScript, Tailwind, and Next.js
-              </Link>{" "}
-              since 2021. My experience spans from startups to mid-sized
-              companies, where I&apos;ve been instrumental in the entire product
-              design process; from ideation and wireframing, through
-              prototyping, to the delivery of the final product, all while
-              efficiently collaborating with cross-functional teams.
+            <h2 className="py-16  pb-2 text-2xl font-light leading-normal tracking-tighter text-foreground xl:text-[40px]">
+              {t("about_title", { stack: "TypeScript, Tailwind, and Next.js" })}
             </h2>
             <div className="grid grid-cols-2 gap-8 xl:grid-cols-3">
               {aboutStats.map((stat) => (
@@ -293,7 +304,7 @@ export default function Home() {
                     {stat.value}
                   </span>
                   <span className="tracking-tight text-muted-foreground xl:text-lg">
-                    {stat.label}
+                    {t(stat.label)}
                   </span>
                 </div>
               ))}
@@ -302,8 +313,7 @@ export default function Home() {
         </section>
 
         {/* Projects */}
-        <section id="projects" data-scroll-section>
-          {/* Gradient */}
+        {/* <section id="projects" data-scroll-section>
           <div className="relative isolate -z-10">
             <div
               className="absolute inset-x-0 -top-40 transform-gpu overflow-hidden blur-[100px] sm:-top-80 lg:-top-60"
@@ -320,17 +330,15 @@ export default function Home() {
           </div>
           <div data-scroll data-scroll-speed=".4" className="my-64">
             <span className="text-gradient clash-grotesk text-sm font-semibold tracking-tighter">
-              ✨ Projects
+              ✨ {t("projects_kicker")}
             </span>
-            <h2 className="mt-3 text-4xl font-semibold tracking-tight tracking-tighter xl:text-6xl">
-              Streamlined digital experiences.
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight xl:text-6xl">
+              {t("projects_heading")}
             </h2>
             <p className="mt-1.5 text-base tracking-tight text-muted-foreground xl:text-lg">
-              I&apos;ve worked on a variety of projects, from small websites to
-              large-scale web applications. Here are some of my favorites:
+              {t("projects_description")}
             </p>
 
-            {/* Carousel */}
             <div className="mt-14">
               <Carousel setApi={setCarouselApi} className="w-full">
                 <CarouselContent>
@@ -375,12 +383,12 @@ export default function Home() {
                 <span className="font-semibold">
                   {current} / {count}
                 </span>{" "}
-                projects
+                {t("projects_count_label")}
               </div>
             </div>
           </div>
         </section>
-
+ */}
         {/* Services */}
         <section id="services" data-scroll-section>
           <div
@@ -401,28 +409,27 @@ export default function Home() {
             >
               <div className="flex flex-col py-6 xl:p-6">
                 <h2 className="text-4xl font-medium tracking-tight">
-                  Need more info?
+                  {t("services_heading_line1")}
                   <br />
                   <span className="text-gradient clash-grotesk tracking-normal">
-                    I got you.
+                    {t("services_heading_line2")}
                   </span>
                 </h2>
                 <p className="mt-2 tracking-tighter text-secondary-foreground">
-                  Here are some of the services I offer. If you have any
-                  questions, feel free to reach out.
+                  {t("services_description")}
                 </p>
               </div>
               {services.map((service) => (
                 <div
-                  key={service.service}
+                  key={service.titleKey}
                   className="flex flex-col items-start rounded-md bg-white/5 p-14 shadow-md backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:bg-white/10 hover:shadow-md"
                 >
                   <service.icon className="my-6 text-primary" size={20} />
                   <span className="text-lg tracking-tight text-foreground">
-                    {service.service}
+                    {t(service.titleKey)}
                   </span>
                   <span className="mt-2 tracking-tighter text-muted-foreground">
-                    {service.description}
+                    {t(service.descKey)}
                   </span>
                 </div>
               ))}
@@ -439,21 +446,28 @@ export default function Home() {
             className="flex flex-col items-center justify-center rounded-lg bg-gradient-to-br from-primary/[6.5%] to-white/5 px-8 py-16 text-center xl:py-24"
           >
             <h2 className="text-4xl font-medium tracking-tighter xl:text-6xl">
-              Let&apos;s work{" "}
-              <span className="text-gradient clash-grotesk">together.</span>
+              {t("contact_heading", { emphasis: t("contact_emphasis") })}
             </h2>
             <p className="mt-1.5 text-base tracking-tight text-muted-foreground xl:text-lg">
-              I&apos;m currently available for freelance work and open to
-              discussing new projects.
+              {t("contact_description")}
             </p>
-            <Link href="mailto:wendoj@proton.me" passHref>
-              <Button className="mt-6">Get in touch</Button>
+            <Link href="mailto:abdrahmen.3amri@gmail.com" passHref>
+              <Button className="mt-6">{t("get_in_touch")}</Button>
             </Link>
           </div>
         </section>
       </div>
     </Container>
   );
+}
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  const config: UserConfig = (i18nextConfig as unknown) as UserConfig;
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"], config)),
+    },
+  };
 }
 
 function Gradient() {

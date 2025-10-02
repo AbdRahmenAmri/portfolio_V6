@@ -7,6 +7,9 @@ import Footer from "@/components/Footer";
 import { useRouter } from "next/router";
 import Preloader from "@/components/Preloader";
 import styles from "@/styles/Container.module.css";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from "next-i18next";
+import { type Locale } from "@/types/common";
 
 type IconProps = {
   ["data-hide"]: boolean;
@@ -37,11 +40,11 @@ const variants = {
 };
 
 const navLinks = [
-  { href: "#home", text: "Home" },
-  { href: "#about", text: "About" },
-  { href: "#projects", text: "Projects" },
-  { href: "#services", text: "Services" },
-  { href: "#contact", text: "Contact" },
+  { href: "#home", text: "nav_home" },
+  { href: "#about", text: "nav_about" },
+//   { href: "#projects", text: "nav_projects" },
+  { href: "#services", text: "nav_services" },
+  { href: "#contact", text: "nav_contact" },
 ];
 
 function handleClick(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
@@ -67,7 +70,7 @@ function NavItem(props: NavProps) {
       <a
         href={props.href}
         onClick={handleClick}
-        className={cn(props.i === 0 && "nav-active", "nav-link")}
+        className={cn(props.i === 0 && "nav-active", "nav-link", "capitalize")}
       >
         {props.text}
       </a>
@@ -80,14 +83,72 @@ export default function Container(props: ContainerProps) {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const locale = useRouter().locale ?? "en" as Locale;
+
+
   const { children, ...customMeta } = props;
+  const { t } = useTranslation("common");
   const router = useRouter();
   const meta = {
-    title: "Wendo",
-    description: `Full-stack website developer and TypeScript enthusiast.`,
+    title: t("title"),
+    description: t("subtitle"),
     image: "/assets/logo.webp",
     type: "website",
     ...customMeta,
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "AbdRahmen Amri",
+    "alternateName": "AbdRahmen",
+    "description": t("subtitle"),
+    "url": `https://www.abdrahmen.tn${router.asPath}`,
+    "image": "https://www.abdrahmen.tn/assets/logo.webp",
+    "sameAs": [
+      "https://github.com/AbdRahmenAmri",
+      "https://linkedin.com/in/abdrahmen",
+      "https://www.facebook.com/abd.rahmen.581187"
+    ],
+    "jobTitle": [
+      t("web_app_developer"),
+      t("mobile_app_developer"),
+      t("desktop_app_developer"),
+      t("cyber_security_expert"),
+      t("ai_engineer")
+    ],
+    "knowsAbout": [
+      "Web Development",
+      "Mobile Development", 
+      "Desktop Applications",
+      "Cybersecurity",
+      "Artificial Intelligence",
+      "Machine Learning",
+      "TypeScript",
+      "React",
+      "ReactNative",
+      "Flutter",
+      "NextJs",
+      "NodeJs",
+      "NestJs",
+      "Python",
+      "PHP",
+      "Java"
+    ],
+    "alumniOf": "Faculty of science of Bizerte",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "TN",
+      "addressRegion": "Bizerte",
+      "addressLocality": "Bizerte"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+216-51-543-503",
+      "contactType": "professional",
+      "email": "abdrahmen.3amri@gmail.com",
+      "availableLanguage": ["en", "fr", "ar"]
+    }
   };
 
   // handle scroll
@@ -116,29 +177,33 @@ export default function Container(props: ContainerProps) {
     <>
       <Head>
         <title>{meta.title}</title>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <meta name="robots" content="follow, index" />
         <meta name="theme-color" content="#7B82FE" />
         <meta content={meta.description} name="description" />
         <meta
           property="og:url"
-          content={`https://www.wendoj.codes${router.asPath}`}
+          content={`https://www.abdrahmen.tn${router.asPath}`}
         />
         <link
           rel="canonical"
-          href={`https://www.wendoj.codes${router.asPath}`}
+          href={`https://www.abdrahmen.tn${router.asPath}`}
         />
         <meta property="og:type" content={meta.type} />
-        <meta property="og:site_name" content="WendoJ" />
+        <meta property="og:site_name" content="AbdRahmen Amri" />
         <meta property="og:description" content={meta.description} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:image" content={meta.image} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="WendoJ" />
+        <meta name="twitter:site" content="AbdRahmen Amri" />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={meta.image} />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/assets/brand.svg" />
       </Head>
       <nav
         className={cn(
@@ -164,21 +229,29 @@ export default function Container(props: ContainerProps) {
           </button>
         </div>
         <Link href="/">
-          <span className="text-lg font-semibold">wendo</span>
+          <span className="text-lg font-semibold">AbdRahmen</span>
         </Link>
 
         {/* Desktop menu */}
-        <ul className={styles["desktop-nav"]}>
+        <ul className={cn(
+          styles["desktop-nav"],
+          locale === "ar" && "flex-row-reverse"
+        )}
+        dir={locale === "ar" ? "rtl" : "ltr"}
+        >
           {navLinks.map((link, i) => (
             <NavItem
               key={link.href}
               href={link.href}
-              text={link.text}
+              text={t(link.text)}
               i={i}
               className="text-base"
             />
           ))}
         </ul>
+        <div className="hidden md:block">
+          <LanguageSwitcher />
+        </div>
 
         {/* Mobile menu */}
         <AnimatePresence key="menu">
@@ -192,7 +265,7 @@ export default function Container(props: ContainerProps) {
             >
               {/* Expandable menu */}
               <div className="flex h-20 max-h-20 min-h-[60px] w-full items-center justify-between border-b pl-[22px] pr-1">
-                <span className="text-base font-medium lowercase">Menu</span>
+                <span className="text-base font-medium lowercase">{t("nav_menu")}</span>
                 <button
                   onClick={() => setIsOpen(!isOpen)}
                   className={styles.burger}
@@ -204,26 +277,24 @@ export default function Container(props: ContainerProps) {
                 </button>
               </div>
               <div className="flex h-full flex-col items-start justify-between overflow-y-auto">
+             
                 {/* Links */}
                 <ul className="flex min-h-fit w-full flex-col items-start space-y-6 px-[22px] py-[58px]">
                   {navLinks.map((link, i) => (
                     <button key={link.href} onClick={() => setIsOpen(false)}>
                       <NavItem
                         href={link.href}
-                        text={link.text}
+                        text={t(link.text)}
                         i={i}
                         className="text-xl"
                       />
                     </button>
                   ))}
+                   <div className="w-screen flex items-center justify-around gap-2">
+          <LanguageSwitcher />
+        </div>
                 </ul>
 
-                {/* Footer */}
-                <div className="flex min-h-fit w-full flex-col space-y-8 px-[22px] py-10">
-                  <span className="text-sm text-muted-foreground">
-                    © {new Date().getFullYear()} wendo. All rights reserved.
-                  </span>
-                </div>
               </div>
             </motion.div>
           )}

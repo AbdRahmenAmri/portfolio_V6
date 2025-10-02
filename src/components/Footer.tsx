@@ -1,56 +1,51 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
-import { MailIcon } from "lucide-react";
+import { GithubIcon, LinkedinIcon, MailIcon, PhoneIcon } from "lucide-react";
 
 export default function Footer() {
-  // get the current time in UTC+1 time zone
-  const [time, setTime] = useState<string>("");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const date = new Date();
-      date.setHours(date.getHours());
-      setTime(
-        date.toLocaleTimeString("en-US", {
-          hour12: true,
-          hour: "numeric",
-          minute: "numeric",
-        }),
-      );
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <footer className="w-full bg-gradient-to-t from-primary/[1%] to-transparent">
-      <div className="container mx-auto flex flex-row items-center justify-between py-6">
-        <span className="flex flex-row items-center space-x-4">
-          <p className="text-xs text-muted-foreground">
-            Made with ❤️ by{" "}
-            <Link
-              href="https://github.com/wendoj"
-              target="_blank"
-              passHref
-              className="text-foreground transition hover:text-primary"
-            >
-              wendoj
-            </Link>
-          </p>
-          <hr className="hidden h-6 border-l border-muted md:flex" />
-          <span className="flex hidden flex-row items-center space-x-2 md:flex">
-            <p className="text-xs text-muted-foreground">Local time:</p>
-            <p className="text-sm font-semibold">{time} UTC+1</p>
-          </span>
-        </span>
-        <Link
-          href="mailto:wendoj@proton.me"
+      <div className="container mx-auto flex flex-row items-center justify-center py-6 gap-2">
+      <Link
+          href="mailto:abdrahmen.3amri@gmail.com"
           passHref
           className="text-xs text-muted-foreground hover:text-foreground"
         >
-          <Button variant={"outline"}>
+          <Button variant={"outline"} className="flex flex-row items-center gap-2" dir="ltr">
             <MailIcon className="h-4 w-4 md:mr-2" />
-            <span className="hidden md:flex">wendoj@proton.me</span>
+            <span className="hidden md:flex">abdrahmen.3amri@gmail.com</span>
+          </Button>
+        </Link>
+        <Link
+          href="tel:+21651543503"
+          passHref
+          className="text-xs text-muted-foreground hover:text-foreground"
+        >
+          <Button variant={"outline"} className="flex flex-row items-center gap-2" dir="ltr">
+            <PhoneIcon className="h-4 w-4 md:mr-2" />
+            <span className="hidden md:flex">+216 51 543 503</span>
+          </Button>
+        </Link>
+        <Link
+          href="https://www.linkedin.com/in/abdrahmen"
+          passHref
+          className="text-xs text-muted-foreground hover:text-foreground"
+        >
+          <Button variant={"outline"} className="flex flex-row items-center gap-2" dir="ltr">
+            <LinkedinIcon className="h-4 w-4 md:mr-2" />
+            <span className="hidden md:flex">LinkedIn</span>
+          </Button>
+        </Link>
+        <Link
+          href="https://github.com/AbdRahmenAmri"
+          passHref
+          className="text-xs text-muted-foreground hover:text-foreground"
+        >
+          <Button variant={"outline"} className="flex flex-row items-center gap-2" dir="ltr">
+            <GithubIcon className="h-4 w-4 md:mr-2" />
+            <span className="hidden md:flex">GitHub</span>
           </Button>
         </Link>
       </div>
