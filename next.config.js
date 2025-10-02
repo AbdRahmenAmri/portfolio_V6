@@ -16,7 +16,7 @@ const withPWA = WithPWA({
 /**
  * @type {import('next').NextConfig}
  */
-// @ts-ignore
+// @ts-expect-error
 const config = withPWA({
   reactStrictMode: true,
 
@@ -28,7 +28,6 @@ const config = withPWA({
   i18n: {
     locales: ["en", "fr", "ar"],
     defaultLocale: "en",
-    localeDetection: true,
   },
 });
 
