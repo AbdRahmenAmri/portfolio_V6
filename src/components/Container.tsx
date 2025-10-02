@@ -3,6 +3,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn, scrollTo } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import Script from "next/script";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/router";
 import Preloader from "@/components/Preloader";
@@ -42,7 +43,7 @@ const variants = {
 const navLinks = [
   { href: "#home", text: "nav_home" },
   { href: "#about", text: "nav_about" },
-//   { href: "#projects", text: "nav_projects" },
+  //   { href: "#projects", text: "nav_projects" },
   { href: "#services", text: "nav_services" },
   { href: "#contact", text: "nav_contact" },
 ];
@@ -119,7 +120,7 @@ export default function Container(props: ContainerProps) {
     ],
     "knowsAbout": [
       "Web Development",
-      "Mobile Development", 
+      "Mobile Development",
       "Desktop Applications",
       "Cybersecurity",
       "Artificial Intelligence",
@@ -176,6 +177,7 @@ export default function Container(props: ContainerProps) {
   return (
     <>
       <Head>
+    
         <title>{meta.title}</title>
         <script
           type="application/ld+json"
@@ -204,7 +206,25 @@ export default function Container(props: ContainerProps) {
         <meta name="twitter:image" content={meta.image} />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/assets/brand.svg" />
+
       </Head>
+      {/*  Google tag (gtag.js)  */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-TEHSBXXPX1"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-TEHSBXXPX1');
+            `,
+          }}
+        />
       <nav
         className={cn(
           styles.nav,
@@ -237,7 +257,7 @@ export default function Container(props: ContainerProps) {
           styles["desktop-nav"],
           locale === "ar" && "flex-row-reverse"
         )}
-        dir={locale === "ar" ? "rtl" : "ltr"}
+          dir={locale === "ar" ? "rtl" : "ltr"}
         >
           {navLinks.map((link, i) => (
             <NavItem
@@ -277,7 +297,7 @@ export default function Container(props: ContainerProps) {
                 </button>
               </div>
               <div className="flex h-full flex-col items-start justify-between overflow-y-auto">
-             
+
                 {/* Links */}
                 <ul className="flex min-h-fit w-full flex-col items-start space-y-6 px-[22px] py-[58px]">
                   {navLinks.map((link, i) => (
@@ -290,9 +310,9 @@ export default function Container(props: ContainerProps) {
                       />
                     </button>
                   ))}
-                   <div className="w-screen flex items-center justify-around gap-2">
-          <LanguageSwitcher />
-        </div>
+                  <div className="w-screen flex items-center justify-around gap-2">
+                    <LanguageSwitcher />
+                  </div>
                 </ul>
 
               </div>
