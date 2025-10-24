@@ -93,7 +93,7 @@ export default function Container(props: ContainerProps) {
   const meta = {
     title: t("title"),
     description: t("subtitle"),
-    image: "/assets/logo.webp",
+    image: "/assets/avatar.jpg",
     type: "website",
     ...customMeta,
   };
@@ -105,7 +105,7 @@ export default function Container(props: ContainerProps) {
     "alternateName": "AbdRahmen",
     "description": t("subtitle"),
     "url": `https://www.abdrahmen.tn${router.asPath}`,
-    "image": "https://www.abdrahmen.tn/assets/logo.webp",
+    "image": "https://www.abdrahmen.tn/assets/avatar.jpg",
     "sameAs": [
       "https://github.com/AbdRahmenAmri",
       "https://linkedin.com/in/abdrahmen",
